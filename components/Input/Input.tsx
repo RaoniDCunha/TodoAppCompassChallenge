@@ -6,12 +6,13 @@ export const InputView = styled.View`
     background-color: #fff;
     height: 42px;
     width: 100%;
-    border: 1px solid ${colors.purple.dark};
+    border: 1px solid ${colors.gray["300"]};
     background-color: ${colors.gray["100"]};
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     border-radius: 8px;
+    padding-left: 8px;
 `;
 
 export const InputText = styled.TextInput`
@@ -24,11 +25,11 @@ export const InputText = styled.TextInput`
 `;
 
 
-export const Input = () => {
+export const Input = ({title}:any) => {
     return (
         <>
             <InputView >
-                <InputText placeholder={'Texto aqui'}/>
+                <InputText placeholder={title}/>
             </InputView>
         </>
     )

@@ -9,13 +9,23 @@ import {Task} from "@/components/Task/Task";
 
 export default function Index() {
     return (
-        <View style={{ flex: 1, padding: 40, gap: 40 }}>
+        <View style={{ flex: 1, padding: 40, gap: 40, alignItems:  'center',justifyContent: 'center' }}>
             <Image source={require("../assets/Logo.png")} height={400} width={400} />
-            <Input />
-            <Input />
-            <Button />
-            <AntDesign name="eyeo" size={24} color="black" />
-            <Task />
+            <Input title={'Username'} />
+            <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8 }}>
+                <View style={{flex: 5}}>
+                    <Input title={'Password'} />
+                </View>
+                <View style={{flex: 1}}>
+                    <Button onPress={() => router.push("/home")}>
+                        <Button.Icon name="eyeo" />
+                    </Button>
+                </View>
+            </View>
+            <Button onPress={() => router.push("/home")}>
+                <Button.Title>Entrar</Button.Title>
+            </Button>
+
         </View>
     )
 }
