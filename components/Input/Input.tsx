@@ -19,7 +19,7 @@ export const InputText = styled.TextInput`
     font-family: ${fontFamily.input};
     font-size: 16px;
     color: ${colors.gray["500"]};
-    background-color: ${colors.gray["100"]};;
+    background-color: ${colors.gray["100"]};
 
 `;
 
