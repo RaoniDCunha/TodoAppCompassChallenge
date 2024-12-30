@@ -10,12 +10,12 @@ export const TaskView = styled.View`
     width: 100%;
     border: 1px solid ${colors.gray["200"]};
     display: flex;
-    align-items: center;
-    justify-content: start;
+    align-items: start;
+    justify-content: center;
     border-radius: 8px;
     flex-direction: row;
-    padding: 0.75rem ;
-    gap: 6px;
+    padding: 12px ;
+    gap: 10px;
 `;
 
 export const TaskViewCircle = styled.View`
@@ -31,8 +31,15 @@ export const TaskViewCircle = styled.View`
     
 `;
 
+export const TaskViewTextContainer = styled.Text`
+    width: 243px;
+    
+    
+`;
+
 export const TaskViewText = styled.Text`
     color: ${colors.gray["600"]};
     font-family: ${fontFamily.textSm};
+    
     
 `;

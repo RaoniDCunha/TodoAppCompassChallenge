@@ -1,3 +1,5 @@
+import {Inter_600SemiBold} from "@expo-google-fonts/inter";
+
 export const fontFamily = {
   input: "Inter_400Regular",
   button: "Inter_700Bold",
