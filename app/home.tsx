@@ -5,6 +5,9 @@ import {Input} from "@/components/Input/Input";
 import {Button} from "@/components/Button/Button";
 import {router} from "expo-router";
 import {TaskInformationButton} from "@/components/TaskInformationButton/TaskInformation";
+import { ModalCreateTask} from "@/components/Modal/ModalCreateTask";
+import {ModalError} from "@/components/Modal/ModalError";
+import {ModalEdit} from "@/components/Modal/ModalEdit";
 
 
 export default function Home() {
@@ -19,7 +22,7 @@ export default function Home() {
                     </View>
                 </View>
                 <Image source={require("../assets/Logo.png")} height={400} width={400} />
-                <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8, marginBottom: -100 }}>
+                <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8, marginBottom: -80 }}>
                     <View style={{flex: 5}}>
                         <Input title={'Pesquisar tarefa'} />
                     </View>
@@ -44,6 +47,16 @@ export default function Home() {
 
 
             </View>
+            <View style={{ flex: 1, alignItems:  'flex-end',justifyContent: 'flex-end',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
+                <View style={{width:85}}>
+                    <Button onPress={() => router.push("/home")}>
+                        <Button.Title> Criar</Button.Title>
+                        <Button.Icon name="search1" />
+                    </Button>
+                </View>
+
+            </View>
+            <ModalEdit />
         </View>
     )
 }
