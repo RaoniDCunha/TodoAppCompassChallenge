@@ -25,11 +25,11 @@ export const InputText = styled.TextInput`
 `;
 
 
-export const Input = ({title}:any) => {
+export const Input = ({title,visible}:any) => {
     return (
         <>
             <InputView >
-                <InputText placeholder={title}/>
+                <InputText placeholder={title} secureTextEntry={visible}  />
             </InputView>
         </>
     )

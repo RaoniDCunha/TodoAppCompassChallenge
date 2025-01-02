@@ -3,6 +3,7 @@ import {fontFamily} from "@/styles/font-family";
 import {colors} from "@/styles/colors";
 import {TouchableOpacityProps} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import {Feather} from "@expo/vector-icons";
 
 export const ButtonView = styled.TouchableOpacity`
     background-color: #fff;
@@ -47,7 +48,7 @@ export const Title = ({children}:any) => {
 
 export const Icon = ({name}:any) => {
     return (
-        <AntDesign name={name} size={24} color="white" />
+    <Feather name={name} size={24} color="white" />
 
     )
 }

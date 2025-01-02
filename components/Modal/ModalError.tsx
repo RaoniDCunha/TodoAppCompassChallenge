@@ -18,13 +18,13 @@ import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
 
-export const ModalError = ({title}:any) => {
+export const ModalError = ({title,modalvisible}:any) => {
     return (
         <>
             <Modal
                 animationType="none"
                 transparent={true}
-                visible={true}
+                visible={modalvisible}
             >
                 <ModalBackground>
                     <ModalView >

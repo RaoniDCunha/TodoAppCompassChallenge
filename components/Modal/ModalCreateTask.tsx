@@ -8,13 +8,13 @@ import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
 
-export const ModalCreateTask = ({title}:any) => {
+export const ModalCreateTask = ({title,modalvisible}:any) => {
     return (
         <>
             <Modal
                 animationType="none"
                 transparent={true}
-                visible={true}
+                visible={modalvisible}
             >
                 <ModalBackground>
                     <ModalView >
