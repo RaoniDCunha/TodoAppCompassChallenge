@@ -1,12 +1,13 @@
 import styled from 'styled-components/native';
 import {fontFamily} from "@/styles/font-family";
 import {colors} from "@/styles/colors";
+import React from "react";
 
-export const InputView = styled.View`
+export const InputView = styled.View<Error>`
     background-color: #fff;
     height: 42px;
     width: 100%;
-    border: 1px solid ${colors.gray["300"]};
+    border: 1px solid ${props => props.error ? colors.red.danger : colors.gray["300"]};
     background-color: ${colors.gray["100"]};
     display: flex;
     align-items: start;
@@ -24,12 +25,22 @@ export const InputText = styled.TextInput`
 
 `;
 
+interface InputProps {
+    title: string;
+    visible?: boolean;
+    onChangeText: (text: string) => void;
+    error?: boolean;
+}
 
-export const Input = ({title,visible}:any) => {
+interface Error {
+    error?: boolean;
+}
+
+export const Input: React.FC<InputProps> = ({ title, visible, onChangeText,error }) => {
     return (
         <>
-            <InputView >
-                <InputText placeholder={title} secureTextEntry={visible}  />
+            <InputView error={error}>
+                <InputText placeholder={title} secureTextEntry={visible} onChangeText={onChangeText} />
             </InputView>
         </>
     )

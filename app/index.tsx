@@ -5,21 +5,42 @@ import {Button} from "@/components/Button/Button";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import {Task} from "@/components/Task/Task";
 import React from "react";
+import {useAuth} from "@/context/AuthContext";
+import {ErrorMessage} from "@/components/ErrorMessage/ErrorMessage";
 
 
 
 export default function Index() {
 
     const [passwordHide, setPasswordHide] = React.useState(false);
+    const [usernameText, setUsernameText] = React.useState<string>();
+    const [passwordText, setPasswordText] = React.useState<string>();
+    const [loginErrorMessage, setLoginErrorMessage] = React.useState(false);
+    const { login } = useAuth();
 
+
+    const handleLogin = () => {
+
+        if (usernameText === "admin" && passwordText === "admin") {
+
+            const userData = { id: 1, username: "admin" };
+            login(userData);
+            router.replace("/home");
+        } else {
+            setLoginErrorMessage(true)
+            alert("Usuário ou senha incorretos!"+usernameText)
+        }
+    };
 
     return (
-        <View style={{ flex: 1, padding: 40, gap: 40, alignItems:  'center',justifyContent: 'center' }}>
-            <Image source={require("../assets/Logo.png")} height={400} width={400} />
-            <Input title={'Username'} />
+        <View style={{ flex: 1, padding: 40, gap: 10, alignItems:  'center',justifyContent: 'center' }}>
+            <Image source={require("../assets/Logo.png")} height={400} width={400} style={{marginBottom: 60}} />
+            <Input title={'Username'} onChangeText={(text) => setUsernameText(text)} error={loginErrorMessage} />
+            { loginErrorMessage && <ErrorMessage text={'Username Inválido'} /> }
+
             <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8 }}>
                 <View style={{flex: 5}}>
-                    <Input title={'Password'} visible={passwordHide}  />
+                    <Input title={'Password'} visible={passwordHide} onChangeText={(text) => setPasswordText(text)} error={loginErrorMessage} />
                 </View>
                 <View style={{flex: 1}}>
                     { passwordHide == true ?
@@ -38,8 +59,9 @@ export default function Index() {
 
                 </View>
             </View>
-            <Button onPress={() => router.push("/home")}>
-                <Button.Title>Entrar</Button.Title>
+            { loginErrorMessage && <ErrorMessage text={'Senha Inválida'} /> }
+            <Button onPress={ handleLogin}>
+                <Button.Title>Login</Button.Title>
             </Button>
 
         </View>

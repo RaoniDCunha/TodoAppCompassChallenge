@@ -5,9 +5,10 @@ import {
     Inter_700Bold,
     useFonts,
 } from "@expo-google-fonts/inter"
+import {AuthProvider} from "@/context/AuthContext";
 
 export default function Layout() {
-    
+
     const [fontsLoaded] = useFonts({
         Inter_700Bold,
         Inter_400Regular,
@@ -16,12 +17,14 @@ export default function Layout() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack
-                screenOptions={{
-                    headerShown: false,
-                    contentStyle: { backgroundColor: 'white' },
-                }}
-            />
+            <AuthProvider>
+                <Stack
+                    screenOptions={{
+                        headerShown: false,
+                        contentStyle: { backgroundColor: 'white' },
+                    }}
+                />
+            </AuthProvider>
         </GestureHandlerRootView>
     )
 }
