@@ -28,7 +28,7 @@ export const InputText = styled.TextInput`
 interface InputProps {
     title: string;
     visible?: boolean;
-    onChangeText: (text: string) => void;
+    onChangeText?: (text: string) => void;
     error?: boolean;
 }
 

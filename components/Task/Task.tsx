@@ -8,14 +8,16 @@ import {
 import AntDesign from '@expo/vector-icons/AntDesign';
 import {colors} from "@/styles/theme";
 import {Feather} from "@expo/vector-icons";
+import {TouchableOpacity} from "react-native";
 
 interface TaskProps {
     id: number;
     done: boolean;
     title: string
+    onClick?: () => void
 }
 
-export const Task = ({id,done,title}:TaskProps) => {
+export const Task = ({id,done,title,onClick}:TaskProps) => {
     return (
         <>
             <TaskView done={done}>
@@ -32,7 +34,9 @@ export const Task = ({id,done,title}:TaskProps) => {
                 <TaskViewTextContainer  >
                     <TaskViewText done={done}>{title}</TaskViewText>
                 </TaskViewTextContainer>
-                <AntDesign name="delete" size={16} color={colors.gray["500"]} />
+                <TouchableOpacity onPress={onClick}>
+                    <AntDesign name="delete" size={16} color={colors.gray["500"]} />
+                </TouchableOpacity>
             </TaskView>
         </>
     );

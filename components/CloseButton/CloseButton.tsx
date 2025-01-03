@@ -5,10 +5,14 @@ import {TouchableOpacityProps} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import {CloseButtonBox} from "@/components/CloseButton/CloseButtonStyle";
 
-export const CloseButton = () => {
+interface CloseButtonProps  {
+    onClick?: () => void;
+}
+
+export const CloseButton = ({onClick}:CloseButtonProps) => {
     return (
         <>
-            <CloseButtonBox>
+            <CloseButtonBox onPress={onClick}>
                 <AntDesign name={'close'} size={24} color={colors.gray["500"]} />
             </CloseButtonBox>
         </>

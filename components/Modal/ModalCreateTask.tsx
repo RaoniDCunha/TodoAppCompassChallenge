@@ -8,7 +8,15 @@ import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
 
-export const ModalCreateTask = ({title,modalvisible}:any) => {
+
+interface ModalCreateTaskProps {
+    title?: string;
+    modalvisible?: boolean;
+    onClick?: () => void;
+}
+
+
+export const ModalCreateTask = ({title,modalvisible,onClick}:ModalCreateTaskProps) => {
     return (
         <>
             <Modal
@@ -21,12 +29,12 @@ export const ModalCreateTask = ({title,modalvisible}:any) => {
                         <ModalRow>
                             <ModalDescriptionTitle>Nova Tarefa</ModalDescriptionTitle>
                             <View style={{ flex: 1, alignItems: 'flex-end'}}>
-                                <CloseButton />
+                                <CloseButton onClick={onClick} />
                             </View>
                         </ModalRow>
                         <ModalRow>
                             <View style={{flex: 5}}>
-                                <Input title={'Pesquisar tarefa'} />
+                                <Input title={'Criar uma Nova Tarefa'} />
                             </View>
                             <View style={{flex: 1}}>
                                 <Button onPress={() => router.push("/home")}>

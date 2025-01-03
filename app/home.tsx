@@ -11,9 +11,17 @@ import {ModalEdit} from "@/components/Modal/ModalEdit";
 import React from "react";
 import {LogoutButton} from "@/components/LogoutButton/LogoutButton";
 import {useAuth} from "@/context/AuthContext";
+import todoService from "@/service/TodoService";
 
 enum TodoStatus{
     LOADING,EMPTY, TASKS
+}
+
+interface Todo {
+    id: number;
+    todo: string;
+    completed: boolean;
+    userId: number;
 }
 
 export default function Home() {
@@ -25,18 +33,8 @@ export default function Home() {
     const [errorModalVisible, setErrorModalVisible] = React.useState(false);
     const [createTaskModalVisible, setCreateTaskModalVisible] = React.useState(false);
     const [editTaskModalVisible, setEditTaskModalVisible] = React.useState(false);
-    const [todos, setTodos] = React.useState([
-        { id: 1, message: 'Buy milk ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', done: false },
-        { id: 2, message: 'Pay bills', done: true },
-        { id: 3, message: 'Do exercise', done: false },
-        { id: 4, message: 'Read a book', done: false },
-        { id: 5, message: 'Call a friend', done: true },
-        { id: 6, message: 'Walk the dog', done: false },
-        { id: 7, message: 'Do laundry', done: false },
-        { id: 8, message: 'Go to the grocery store', done: true },
-        { id: 9, message: 'Write code', done: false },
-        { id: 10, message: 'Organize the desk', done: true },
-    ]);
+    const [modalActiveInformation,setModalActiveInformation] = React.useState();
+    const [todos, setTodos] = React.useState<Todo[]>([]);
 
     React.useEffect(() => {
         if (!isLoggedIn) {
@@ -44,13 +42,42 @@ export default function Home() {
         }
     }, [isLoggedIn]);
 
+    React.useEffect(() => {
+        const fetchTodos = async () => {
+            try {
+                setCurrentType(TodoStatus.LOADING);
+                const response = await todoService.getAllTodos();
+                setTodos(response.todos);
+                if (response.todos.length === 0) {
+                    setCurrentType(TodoStatus.EMPTY);
+                } else {
+                    setCurrentType(TodoStatus.TASKS);
+                }
+
+
+            } catch (error) {
+                setErrorModalVisible(true);
+                setCurrentType(TodoStatus.EMPTY);
+            }
+        };
+
+        fetchTodos();
+    }, []);
+
+
+
     const handleLogout = () => {
         logout();
         router.replace("/");
     };
 
+    const handleModalEdit = () => {
+
+        setEditTaskModalVisible(true)
+    }
+
     const renderItem = ({ item }:any) => (
-        <Task key={item.id} title={item.message} done={item.done}  id={item.id}/>
+        <Task key={item.id} title={item.todo} done={item.completed}  id={item.id} onClick={() => setEditTaskModalVisible(true)}  />
     );
 
     const ItemSeparator = () => <View style={{marginVertical: 5}} />;
@@ -124,16 +151,16 @@ export default function Home() {
 
             <View style={{ flex: 1, alignItems:  'flex-end',justifyContent: 'flex-end',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
                 <View style={{width:85}}>
-                    <Button onPress={() => setEditTaskModalVisible(true)}>
+                    <Button onPress={() => setCreateTaskModalVisible(true)}>
                         <Button.Title> Criar</Button.Title>
                         <Button.Icon name="plus-circle" />
                     </Button>
                 </View>
 
             </View>
-            <ModalEdit modalvisible={editTaskModalVisible} />
+            <ModalEdit modalvisible={editTaskModalVisible} onClick={() => setEditTaskModalVisible(false)} />
             <ModalError modalvisible={errorModalVisible} />
-            <ModalCreateTask modalvisible={createTaskModalVisible} />
+            <ModalCreateTask modalvisible={createTaskModalVisible} onClick={() => setCreateTaskModalVisible(false)} />
         </View>
     )
 }

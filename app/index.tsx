@@ -28,7 +28,6 @@ export default function Index() {
             router.replace("/home");
         } else {
             setLoginErrorMessage(true)
-            alert("Usuário ou senha incorretos!"+usernameText)
         }
     };
 

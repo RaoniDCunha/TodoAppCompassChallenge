@@ -18,7 +18,13 @@ import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
 
-export const ModalEdit = ({title,modalvisible}:any) => {
+interface ModalEditTaskProps {
+    title?: string;
+    modalvisible?: boolean;
+    onClick?: () => void;
+}
+
+export const ModalEdit = ({title,modalvisible,onClick}:ModalEditTaskProps) => {
     return (
         <>
             <Modal
@@ -32,7 +38,7 @@ export const ModalEdit = ({title,modalvisible}:any) => {
                             <ModalDescriptionTitle>Tarefa : id</ModalDescriptionTitle>
 
                                 <View style={{ flex: 1, alignItems: 'flex-end'}}>
-                                    <CloseButton />
+                                    <CloseButton onClick={onClick} />
                                 </View>
 
                         </ModalRow>
