@@ -36,8 +36,21 @@ export const ModalRow = styled.View`
     justify-content: space-between;
     gap: 8px;
     
+`
+export const ModalRowText = styled.View`
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 8px;
+    padding-bottom: 40px;
+    align-items: center; 
+    justify-content: start;
+    gap: 8px;
+    width: 100%;
     
 `
+
 export const ModalDescriptionTitle = styled.Text`
     color: ${colors.gray["500"]};
     font-family: ${fontFamily.subtitle};
@@ -50,6 +63,7 @@ export const ModalDescriptionText = styled.Text`
     color: ${colors.gray["600"]};
     font-family: ${fontFamily.textMd};
     font-size: 13px;
+    
     
 `
 

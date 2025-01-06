@@ -3,7 +3,7 @@ import {
     ModalBackground,
     ModalDescriptionText,
     ModalDescriptionTitle,
-    ModalRow,
+    ModalRow, ModalRowText,
     ModalView
 } from "@/components/Modal/Modalstyle";
 import React, { useState, useEffect } from 'react';
@@ -17,14 +17,39 @@ import {Button} from "@/components/Button/Button";
 import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
+import todoService from "@/service/TodoService";
+
+interface Todo {
+    id: number;
+    todo: string;
+    completed: boolean;
+    userId: number;
+}
 
 interface ModalEditTaskProps {
     title?: string;
     modalvisible?: boolean;
     onClick?: () => void;
+    onClickEdit?: () => void;
+    focusTask?: Todo;
 }
 
-export const ModalEdit = ({title,modalvisible,onClick}:ModalEditTaskProps) => {
+export const ModalDelete = ({title,modalvisible,onClick,focusTask,onClickEdit}:ModalEditTaskProps) => {
+
+    const deleteItem = async (taskid:number | undefined) => {
+        try {
+
+            const response = await todoService.deleteTodo(taskid!);
+            if (onClick) {
+                onClick();
+            }
+            alert('resposta'+response);
+
+        } catch (error) {
+
+        }
+    }
+
     return (
         <>
             <Modal
@@ -35,26 +60,26 @@ export const ModalEdit = ({title,modalvisible,onClick}:ModalEditTaskProps) => {
                 <ModalBackground>
                     <ModalView >
                         <ModalRow style={{paddingTop:20}}>
-                            <ModalDescriptionTitle>Tarefa : id</ModalDescriptionTitle>
+                            <ModalDescriptionTitle>Tarefa : {focusTask?.id}</ModalDescriptionTitle>
 
                                 <View style={{ flex: 1, alignItems: 'flex-end'}}>
                                     <CloseButton onClick={onClick} />
                                 </View>
 
                         </ModalRow>
-                        <ModalRow >
-                            <ModalDescriptionText>Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.</ModalDescriptionText>
-                        </ModalRow>
+                        <ModalRowText >
+                            <ModalDescriptionText>{focusTask?.todo}</ModalDescriptionText>
+                        </ModalRowText>
                        <ModalRow>
 
 
                                <View style={{flex: 1}}>
-                                   <Button onPress={() => router.push("/home")}>
+                                   <Button onPress={() => onClickEdit?.()}>
                                        <Button.Title>Editar</Button.Title>
                                    </Button>
                                </View>
                             <View style={{flex: 1}}>
-                               <Button onPress={() => router.push("/home")}>
+                               <Button onPress={() => deleteItem(focusTask?.id)}>
                                    <Button.Title>Remover</Button.Title>
                                </Button>
                            </View>

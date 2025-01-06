@@ -7,11 +7,13 @@ import { useRouter } from 'expo-router';
 import {TaskInformationButton} from "@/components/TaskInformationButton/TaskInformation";
 import { ModalCreateTask} from "@/components/Modal/ModalCreateTask";
 import {ModalError} from "@/components/Modal/ModalError";
-import {ModalEdit} from "@/components/Modal/ModalEdit";
+import {ModalDelete} from "@/components/Modal/ModalDelete";
 import React from "react";
 import {LogoutButton} from "@/components/LogoutButton/LogoutButton";
 import {useAuth} from "@/context/AuthContext";
 import todoService from "@/service/TodoService";
+import {ModalEditTask} from "@/components/Modal/ModalEditTask";
+import {EmptyTasks} from "@/components/EmptyTasks/EmptyTasks";
 
 enum TodoStatus{
     LOADING,EMPTY, TASKS
@@ -28,13 +30,17 @@ export default function Home() {
 
     const { isLoggedIn,logout } = useAuth();
     const router = useRouter();
-    const [currentType, setCurrentType] = React.useState(TodoStatus.TASKS);
+    const [currentType, setCurrentType] = React.useState(TodoStatus.EMPTY);
     const [taskSearch, setTaskSearch] = React.useState<string>();
     const [errorModalVisible, setErrorModalVisible] = React.useState(false);
     const [createTaskModalVisible, setCreateTaskModalVisible] = React.useState(false);
     const [editTaskModalVisible, setEditTaskModalVisible] = React.useState(false);
+    const [deleteTaskModalVisible, setDeleteTaskModalVisible] = React.useState(false);
     const [modalActiveInformation,setModalActiveInformation] = React.useState();
+    const [focusTask, setFocusTask] = React.useState<Todo>();
     const [todos, setTodos] = React.useState<Todo[]>([]);
+    const [completedtodos, setCompletedTodos] = React.useState<Todo[]>([]);
+    const [uncompletedtodos, setUncompletedTodos] = React.useState<Todo[]>([]);
 
     React.useEffect(() => {
         if (!isLoggedIn) {
@@ -48,6 +54,13 @@ export default function Home() {
                 setCurrentType(TodoStatus.LOADING);
                 const response = await todoService.getAllTodos();
                 setTodos(response.todos);
+                const completed = response.todos.filter(todo => todo.completed);
+                const uncompleted = response.todos.filter(todo => !todo.completed);
+
+                setCompletedTodos(completed);
+                setUncompletedTodos(uncompleted);
+
+
                 if (response.todos.length === 0) {
                     setCurrentType(TodoStatus.EMPTY);
                 } else {
@@ -64,20 +77,23 @@ export default function Home() {
         fetchTodos();
     }, []);
 
-
+    const onClickEdit = () => {
+        setEditTaskModalVisible(true);
+        setDeleteTaskModalVisible(false);
+    }
 
     const handleLogout = () => {
         logout();
         router.replace("/");
     };
 
-    const handleModalEdit = () => {
-
-        setEditTaskModalVisible(true)
+    const handleModalEdit = (item:Todo) => {
+        setFocusTask(item);
+        setDeleteTaskModalVisible(true);
     }
 
     const renderItem = ({ item }:any) => (
-        <Task key={item.id} title={item.todo} done={item.completed}  id={item.id} onClick={() => setEditTaskModalVisible(true)}  />
+        <Task key={item.id} title={item.todo} done={item.completed}  id={item.id} onClick={() => handleModalEdit(item)}  />
     );
 
     const ItemSeparator = () => <View style={{marginVertical: 5}} />;
@@ -85,19 +101,36 @@ export default function Home() {
     const renderComponent = () => {
         switch (currentType) {
             case TodoStatus.EMPTY:
-                return <View style={{ flex: 6, alignItems:  'center',justifyContent: 'flex-start',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
-                    <Text>Vazio</Text>
+                return <View style={{ flex: 4, alignItems:  'center',justifyContent: 'flex-start',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 10,
+                        marginTop: 20,
+                        justifyContent: 'space-between',
+                        gap:40
+                    }}>
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} />
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} />
+                    </View>
+                    <EmptyTasks />
                 </View>;
             case TodoStatus.LOADING:
-                return <View style={{ flex: 6, alignItems:  'center',justifyContent: 'center',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
+                return <View style={{ flex: 4, alignItems:  'center',justifyContent: 'center',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
                     <ActivityIndicator size="large" color={colors.gray["200"]} />
                 </View>;
             case TodoStatus.TASKS:
-                return <View style={{ flex: 6, alignItems:  'center',justifyContent: 'flex-start',paddingHorizontal:20, paddingVertical: 40,gap: 10 }}>
-                    <View style={{ flexDirection: 'row',marginBottom: 10,marginTop: 20,paddingHorizontal: 40,justifyContent: 'space-between',gap: 50}}>
-                        <TaskInformationButton number={8} title={'Tarefas criadas'} color={'purple'} />
-                        <TaskInformationButton number={16} title={'Concluidas'} color={'green'} />
+                return <View style={{ flex: 4, justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 10,
+                        marginTop: 20,
+                        justifyContent: 'space-between',
+                        gap:40
+                    }}>
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} />
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} />
                     </View>
+
 
 
                     <FlatList
@@ -125,7 +158,7 @@ export default function Home() {
 
     return (
         <View style={{ flex: 1  }}>
-            <View style={{ flex: 1, alignItems:  'center',justifyContent: 'center',backgroundColor: colors.gray["200"],padding: 40 }}>
+            <View style={{ flex: 1, alignItems:  'center',justifyContent: 'center',backgroundColor: colors.gray["200"],padding: 20 }}>
                 <View style={{justifyContent: 'flex-end',flexDirection:'row',width: 350}}>
                     <View style={{width: 32}}>
                         <TouchableOpacity onPress={handleLogout}>
@@ -135,7 +168,7 @@ export default function Home() {
                     </View>
                 </View>
                 <Image source={require("../assets/Logo.png")} height={400} width={400} style={{marginVertical:20}}/>
-                <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8, marginBottom: -50 }}>
+                <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8, marginBottom: -20 }}>
                     <View style={{flex: 5}}>
                         <Input title={'Pesquisar tarefa'} onChangeText={(text) => setTaskSearch(text)} />
                     </View>
@@ -158,9 +191,11 @@ export default function Home() {
                 </View>
 
             </View>
-            <ModalEdit modalvisible={editTaskModalVisible} onClick={() => setEditTaskModalVisible(false)} />
+            <ModalDelete modalvisible={deleteTaskModalVisible} onClick={() => setDeleteTaskModalVisible(false)} focusTask={focusTask}  onClickEdit={onClickEdit}  />
             <ModalError modalvisible={errorModalVisible} />
             <ModalCreateTask modalvisible={createTaskModalVisible} onClick={() => setCreateTaskModalVisible(false)} />
+            <ModalEditTask modalvisible={editTaskModalVisible} onClick={() => setEditTaskModalVisible(false)} focusTask={focusTask} />
         </View>
     )
 }
+

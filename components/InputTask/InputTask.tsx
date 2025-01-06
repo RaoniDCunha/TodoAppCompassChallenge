@@ -36,15 +36,24 @@ interface Error {
     error?: boolean;
 }
 
-export const Input: React.FC<InputProps> = ({ title, visible, onChangeText,error }) => {
+export const InputTask: React.FC<InputProps> = ({ title, visible, onChangeText,error }) => {
 
+    const [text, setText] = React.useState('');
+    const [height, setHeight] = React.useState(61); // Altura inicial do input
+    const minHeight = 61;
+    const maxHeight = 240;
 
+    const handleContentSizeChange = (event:any) => {
+        let newHeight = event.nativeEvent.contentSize.height;
+        newHeight = Math.max(minHeight, Math.min(newHeight, maxHeight)); // Garante que a altura não saia dos limites
+        setHeight(newHeight);
+    };
 
 
     return (
         <>
             <InputView error={error} >
-                <InputText placeholder={title} secureTextEntry={visible} onChangeText={onChangeText} multiline={true}  />
+                <InputText placeholder={title} secureTextEntry={visible} onChangeText={onChangeText} multiline={true} onContentSizeChange={handleContentSizeChange} />
             </InputView>
         </>
     )

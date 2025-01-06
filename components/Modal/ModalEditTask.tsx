@@ -7,13 +7,22 @@ import {Button} from "@/components/Button/Button";
 import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
-import todoService from "@/service/TodoService";
 import {InputTask} from "@/components/InputTask/InputTask";
+import todoService from "@/service/TodoService";
 
-interface ModalCreateTaskProps {
+
+interface ModalEditTaskProps {
     title?: string;
     modalvisible?: boolean;
     onClick?: () => void;
+    focusTask?: Todo;
+}
+
+interface Todo {
+    id: number;
+    todo: string;
+    completed: boolean;
+    userId: number;
 }
 
 interface TodoPayload {
@@ -22,7 +31,7 @@ interface TodoPayload {
     userId?: number
 }
 
-export const ModalCreateTask = ({title,modalvisible,onClick}:ModalCreateTaskProps) => {
+export const ModalEditTask = ({title,modalvisible,onClick,focusTask}:ModalEditTaskProps) => {
 
     const [newTaskName,setNewTaskName] = useState<string>("");
 
@@ -51,17 +60,17 @@ export const ModalCreateTask = ({title,modalvisible,onClick}:ModalCreateTaskProp
                 <ModalBackground>
                     <ModalView >
                         <ModalRow>
-                            <ModalDescriptionTitle>Nova Tarefa</ModalDescriptionTitle>
+                            <ModalDescriptionTitle>Editar Tarefa: {focusTask?.id}</ModalDescriptionTitle>
                             <View style={{ flex: 1, alignItems: 'flex-end'}}>
                                 <CloseButton onClick={onClick} />
                             </View>
                         </ModalRow>
                         <ModalRow>
                             <View style={{flex: 5}}>
-                                <InputTask title={'Criar uma Nova Tarefa'}  onChangeText={(text) => setNewTaskName(text)} />
+                                <InputTask title={'Criar uma Nova Tarefa'} />
                             </View>
                             <View style={{flex: 1}}>
-                                <Button onPress={ () => newTask('dd')}>
+                                <Button onPress={() => newTask(newTaskName)}>
                                     <Button.Icon name="plus" />
                                 </Button>
                             </View>

@@ -10,7 +10,6 @@ interface TaskInformationCountViewProps {
 
 export const TaskInformationView = styled.View`
     height: 1.375rem;
-    width: 50%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
