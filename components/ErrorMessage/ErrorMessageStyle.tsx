@@ -9,6 +9,7 @@ export const ErrorMessageView = styled.View`
     align-items: start;
     justify-content: start;
     flex-direction: row;
+    width: 100%;
     
 `
 

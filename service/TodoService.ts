@@ -1,28 +1,19 @@
 import axios, { AxiosResponse } from 'axios';
 
-const API_BASE_URL = 'https://dummyjson.com/todos';
+const API_BASE_URL = 'http://10.0.2.2:3000';
 
 interface Todo {
-    id: number;
+    id: string;
     todo: string;
     completed: boolean;
     userId: number;
 }
 
-
-interface TodosResponse {
-    todos: Todo[];
-    total: number;
-    skip: number;
-    limit: number;
-}
-
+type TodosResponse = Todo[];
 
 interface SingleTodoResponse {
     todo: Todo;
 }
-
-
 
 interface TodoPayload {
     todo: string;
@@ -31,10 +22,9 @@ interface TodoPayload {
 }
 
 const todoService = {
-
-    async getAllTodos(): Promise<TodosResponse> {
+    async getAllTodos(): Promise<Todo[]> {
         try {
-            const response: AxiosResponse<TodosResponse> = await axios.get(`${API_BASE_URL}`);
+            const response: AxiosResponse<Todo[]> = await axios.get<Todo[]>(`${API_BASE_URL}/todos`);
             return response.data;
         } catch (error) {
             console.error('Erro ao buscar todos os TODOs:', error);
@@ -42,10 +32,9 @@ const todoService = {
         }
     },
 
-
-    async getTodoById(id: number): Promise<SingleTodoResponse> {
+    async getTodoById(id: string): Promise<SingleTodoResponse> {
         try {
-            const response: AxiosResponse<Todo> = await axios.get(`${API_BASE_URL}/${id}`);
+            const response: AxiosResponse<Todo> = await axios.get(`${API_BASE_URL}/todos/${id}`);
             return { todo: response.data };
         } catch (error) {
             console.error(`Erro ao buscar TODO com ID ${id}:`, error);
@@ -53,10 +42,9 @@ const todoService = {
         }
     },
 
-
     async createTodo(payload: TodoPayload): Promise<SingleTodoResponse> {
         try {
-            const response: AxiosResponse<Todo> = await axios.post(API_BASE_URL + '/add', payload);
+            const response: AxiosResponse<Todo> = await axios.post(`${API_BASE_URL}/todos`, payload);
             return { todo: response.data };
         } catch (error) {
             console.error('Erro ao criar TODO:', error);
@@ -64,9 +52,9 @@ const todoService = {
         }
     },
 
-    async updateTodo(id: number, payload: TodoPayload): Promise<SingleTodoResponse> {
+    async updateTodo(id: string, payload: TodoPayload): Promise<SingleTodoResponse> {
         try {
-            const response: AxiosResponse<Todo> = await axios.put(`${API_BASE_URL}/${id}`, payload);
+            const response: AxiosResponse<Todo> = await axios.put(`${API_BASE_URL}/todos/${id}`, payload);
             return { todo: response.data };
         } catch (error) {
             console.error(`Erro ao atualizar TODO com ID ${id}:`, error);
@@ -74,11 +62,9 @@ const todoService = {
         }
     },
 
-
-
-    async deleteTodo(id: number): Promise<void> {
+    async deleteTodo(id: string): Promise<void> {
         try {
-            await axios.delete(`${API_BASE_URL}/${id}`);
+            await axios.delete(`${API_BASE_URL}/todos/${id}`);
         } catch (error) {
             console.error(`Erro ao deletar TODO com ID ${id}:`, error);
             throw error;

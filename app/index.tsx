@@ -16,6 +16,7 @@ export default function Index() {
     const [usernameText, setUsernameText] = React.useState<string>();
     const [passwordText, setPasswordText] = React.useState<string>();
     const [loginErrorMessage, setLoginErrorMessage] = React.useState(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = React.useState(false);
     const { login } = useAuth();
 
 
@@ -26,8 +27,14 @@ export default function Index() {
             const userData = { id: 1, username: "admin" };
             login(userData);
             router.replace("/home");
+        } else if(usernameText !== 'admin') {
+            setLoginErrorMessage(true);
+        }else
+        if(passwordText !== 'admin') {
+            setPasswordErrorMessage(true);
         } else {
-            setLoginErrorMessage(true)
+            setPasswordErrorMessage(true);
+            setLoginErrorMessage(true);
         }
     };
 
@@ -39,7 +46,7 @@ export default function Index() {
 
             <View style={{  alignItems:  'center',justifyContent: 'center',flexDirection: 'row', gap: 8 }}>
                 <View style={{flex: 5}}>
-                    <Input title={'Password'} visible={passwordHide} onChangeText={(text) => setPasswordText(text)} error={loginErrorMessage} />
+                    <Input title={'Password'} visible={passwordHide} onChangeText={(text) => setPasswordText(text)} error={passwordErrorMessage} />
                 </View>
                 <View style={{flex: 1}}>
                     { passwordHide == true ?
@@ -58,7 +65,7 @@ export default function Index() {
 
                 </View>
             </View>
-            { loginErrorMessage && <ErrorMessage text={'Senha Inválida'} /> }
+            { passwordErrorMessage && <ErrorMessage text={'Senha Inválida'} /> }
             <Button onPress={ handleLogin}>
                 <Button.Title>Login</Button.Title>
             </Button>

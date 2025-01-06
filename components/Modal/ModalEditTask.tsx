@@ -19,7 +19,7 @@ interface ModalEditTaskProps {
 }
 
 interface Todo {
-    id: number;
+    id: string;
     todo: string;
     completed: boolean;
     userId: number;
@@ -67,7 +67,7 @@ export const ModalEditTask = ({title,modalvisible,onClick,focusTask}:ModalEditTa
                         </ModalRow>
                         <ModalRow>
                             <View style={{flex: 5}}>
-                                <InputTask title={'Criar uma Nova Tarefa'} />
+                                <InputTask title={'Editar Tarefa'} />
                             </View>
                             <View style={{flex: 1}}>
                                 <Button onPress={() => newTask(newTaskName)}>

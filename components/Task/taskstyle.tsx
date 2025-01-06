@@ -21,6 +21,8 @@ export const TaskView = styled.View<TaskViewProps>`
     gap: 10px;
 `;
 
+
+
 export const TaskViewCircle = styled.View`
     background-color: ${colors.gray["300"]};
     height: 22px;

@@ -9,25 +9,53 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import {colors} from "@/styles/theme";
 import {Feather} from "@expo/vector-icons";
 import {TouchableOpacity} from "react-native";
+import todoService from "@/service/TodoService";
+import {useState} from "react";
 
 interface TaskProps {
-    id: number;
+    id: string;
     done: boolean;
-    title: string
-    onClick?: () => void
+    title: string;
+    onClick?: () => void;
+    refreshList: () => void;
 }
 
-export const Task = ({id,done,title,onClick}:TaskProps) => {
+interface TodoPayload {
+    todo: string;
+    completed?: boolean;
+    userId?: number;
+}
+
+export const Task = ({id,done,title,onClick,refreshList}:TaskProps) => {
+
+    const payload:TodoPayload = {
+        todo: title,
+        completed: !done,
+        userId: 4
+    }
+
+    const updateTask = async () => {
+        await todoService.updateTodo(id,payload);
+        refreshList();
+    }
+
+
+
     return (
         <>
             <TaskView done={done}>
                 { done ? (
-                        <TaskViewCircleDone>
-                            <Feather name='check' size={16} color="white" />
-                        </TaskViewCircleDone>
+                        <TouchableOpacity onPress={updateTask}>
+                            <TaskViewCircleDone>
+                                <Feather name='check' size={16} color="white" />
+                            </TaskViewCircleDone>
+                        </TouchableOpacity>
+
                 )
                     :(
-                    <TaskViewCircle />
+                        <TouchableOpacity onPress={updateTask}>
+                            <TaskViewCircle />
+                        </TouchableOpacity>
                 )
                 }
 

@@ -44,7 +44,7 @@ export const Input: React.FC<InputProps> = ({ title, visible, onChangeText,error
     return (
         <>
             <InputView error={error} >
-                <InputText placeholder={title} secureTextEntry={visible} onChangeText={onChangeText} multiline={true}  />
+                <InputText placeholder={title} secureTextEntry={visible} onChangeText={onChangeText}   />
             </InputView>
         </>
     )

@@ -8,7 +8,7 @@ import {
 } from "@/components/Modal/Modalstyle";
 import React, { useState, useEffect } from 'react';
 import {
-    Image,
+    Image, Keyboard,
     Modal, Text, View
 
 } from 'react-native';
@@ -20,7 +20,7 @@ import {CloseButton} from "@/components/CloseButton/CloseButton";
 import todoService from "@/service/TodoService";
 
 interface Todo {
-    id: number;
+    id: string;
     todo: string;
     completed: boolean;
     userId: number;
@@ -32,23 +32,28 @@ interface ModalEditTaskProps {
     onClick?: () => void;
     onClickEdit?: () => void;
     focusTask?: Todo;
+    refreshList: () => void;
 }
 
-export const ModalDelete = ({title,modalvisible,onClick,focusTask,onClickEdit}:ModalEditTaskProps) => {
+export const ModalDelete = ({title,modalvisible,onClick,focusTask,onClickEdit,refreshList}:ModalEditTaskProps) => {
 
-    const deleteItem = async (taskid:number | undefined) => {
+    const deleteItem = async (taskid:string | undefined) => {
         try {
 
+            Keyboard.dismiss()
             const response = await todoService.deleteTodo(taskid!);
+            refreshList()
             if (onClick) {
                 onClick();
             }
-            alert('resposta'+response);
+
 
         } catch (error) {
 
         }
     }
+
+
 
     return (
         <>

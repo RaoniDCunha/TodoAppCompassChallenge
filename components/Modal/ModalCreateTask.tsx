@@ -1,6 +1,7 @@
 import {ModalBackground, ModalDescriptionTitle, ModalRow, ModalView} from "@/components/Modal/Modalstyle";
 import React, {useState} from 'react';
 import {
+    Keyboard,
     Modal, View
 } from 'react-native';
 import {Button} from "@/components/Button/Button";
@@ -14,6 +15,7 @@ interface ModalCreateTaskProps {
     title?: string;
     modalvisible?: boolean;
     onClick?: () => void;
+    refreshList: () => void;
 }
 
 interface TodoPayload {
@@ -22,12 +24,13 @@ interface TodoPayload {
     userId?: number
 }
 
-export const ModalCreateTask = ({title,modalvisible,onClick}:ModalCreateTaskProps) => {
+export const ModalCreateTask = ({title,modalvisible,onClick,refreshList}:ModalCreateTaskProps) => {
 
     const [newTaskName,setNewTaskName] = useState<string>("");
 
     const newTask = async (task:string) => {
 
+        Keyboard.dismiss();
         const newTask:TodoPayload = {
             todo: `${newTaskName}`,
             completed: false,
@@ -35,6 +38,7 @@ export const ModalCreateTask = ({title,modalvisible,onClick}:ModalCreateTaskProp
         }
 
         let response = await todoService.createTodo(newTask);
+        refreshList();
 
         if (onClick) {
             onClick();
