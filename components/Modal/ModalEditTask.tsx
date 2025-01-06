@@ -16,6 +16,7 @@ interface ModalEditTaskProps {
     modalvisible?: boolean;
     onClick?: () => void;
     focusTask?: Todo;
+    refreshList: () => void;
 }
 
 interface Todo {
@@ -31,7 +32,7 @@ interface TodoPayload {
     userId?: number
 }
 
-export const ModalEditTask = ({title,modalvisible,onClick,focusTask}:ModalEditTaskProps) => {
+export const ModalEditTask = ({title,modalvisible,onClick,focusTask,refreshList}:ModalEditTaskProps) => {
 
     const [newTaskName,setNewTaskName] = useState<string>("");
 
@@ -39,11 +40,13 @@ export const ModalEditTask = ({title,modalvisible,onClick,focusTask}:ModalEditTa
 
         const newTask:TodoPayload = {
             todo: `${newTaskName}`,
-            completed: false,
+            completed: focusTask?.completed,
             userId: 4
         }
 
-        let response = await todoService.createTodo(newTask);
+         await todoService.updateTodo(focusTask?.id!,newTask);
+
+        refreshList();
 
         if (onClick) {
             onClick();
@@ -67,7 +70,7 @@ export const ModalEditTask = ({title,modalvisible,onClick,focusTask}:ModalEditTa
                         </ModalRow>
                         <ModalRow>
                             <View style={{flex: 5}}>
-                                <InputTask title={'Editar Tarefa'} />
+                                <InputTask title={'Editar Tarefa'} onChangeText={(text) => setNewTaskName(text)}/>
                             </View>
                             <View style={{flex: 1}}>
                                 <Button onPress={() => newTask(newTaskName)}>

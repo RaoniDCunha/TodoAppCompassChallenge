@@ -198,7 +198,7 @@ export default function Home() {
             <ModalDelete modalvisible={deleteTaskModalVisible} onClick={() => setDeleteTaskModalVisible(false)} focusTask={focusTask} onClickEdit={onClickEdit} refreshList={fetchTodos} />
             <ModalError modalvisible={errorModalVisible} />
             <ModalCreateTask modalvisible={createTaskModalVisible} onClick={() => setCreateTaskModalVisible(false)} refreshList={fetchTodos} />
-            <ModalEditTask modalvisible={editTaskModalVisible} onClick={() => setEditTaskModalVisible(false)} focusTask={focusTask}  />
+            <ModalEditTask modalvisible={editTaskModalVisible} onClick={() => setEditTaskModalVisible(false)} focusTask={focusTask} refreshList={fetchTodos}  />
         </View>
     )
 }
