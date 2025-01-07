@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { Task } from '@/components/Task/Task';
 
 
-test('Task renders with correct title', () => {
+test('Titulo das Tasks Deve ser Renderizado Corretamente', () => {
     const titleText = 'Test Task';
     const { getByText } = render(
         <Task id='1' done={false} title={titleText} refreshList={()=>{}}/>
@@ -15,7 +15,7 @@ test('Task renders with correct title', () => {
 });
 
 
-test('Task renders a circle when not done', () => {
+test('Task Possui Um Circulo Quando Não Concluida', () => {
     const { getByTestId } = render(
         <Task id='1' done={false} title='test' refreshList={()=>{}}/>
     );

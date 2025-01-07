@@ -1,28 +1,10 @@
 {
   "todos": [
     {
-      "todo": "Terminar AWS",
+      "todo": "finalizar desafio",
       "completed": true,
       "userId": 4,
-      "id": "7a2b"
-    },
-    {
-      "todo": "realizar video",
-      "completed": true,
-      "userId": 4,
-      "id": "4c7b"
-    },
-    {
-      "todo": "criado nova task",
-      "completed": true,
-      "userId": 4,
-      "id": "ad12"
-    },
-    {
-      "todo": "finalizaçao do projeto final e entrega no repositório completo com a documentaçao final.",
-      "completed": false,
-      "userId": 4,
-      "id": "c054"
+      "id": "169e"
     }
   ]
 }

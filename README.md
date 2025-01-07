@@ -70,12 +70,15 @@ A seguir, vídeos que demonstram as funcionalidades, configurações e execuçã
 
 ### Demonstração da Aplicação
 
-[Link do Vídeo de Demonstração da Aplicação](https://www.youtube.com/watch?v=yZg82q5Qn3A)
+[Link do Vídeo de Demonstração da Aplicação](https://youtube.com/shorts/qSaOjJLGKCs?feature=share)
 
-### Configurações da AWS
+### Explicação do Projeto
 
-[Link do Vídeo de Configuração da AWS](https://www.youtube.com/watch?v=B1K2kX2H_34)
+[Link do Vídeo de Explicação do Projeto](https://youtu.be/3KuYCdZYhUw)
 
 ### Executando o Projeto e Testes no Terminal
 
-[Link do Vídeo da Execução do Projeto e Testes](https://www.youtube.com/watch?v=n5l-13fU7gQ)
+[Link do Vídeo da Execução dos Testes](https://www.youtube.com/watch?v=SJMuJOrSnic)
+
+[Link do Vídeo da Execução do Projeto no Terminal](https://www.youtube.com/watch?v=7L5Rzcy3ObA)
+
