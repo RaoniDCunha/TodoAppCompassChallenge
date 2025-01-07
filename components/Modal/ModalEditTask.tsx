@@ -21,16 +21,15 @@ interface ModalEditTaskProps {
 }
 
 interface Todo {
-    id: string;
-    todo: string;
-    completed: boolean;
-    userId: number;
+    id: number;
+    tarefa: string;
+    status: boolean;
 }
 
 interface TodoPayload {
-    todo: string;
+    tarefa: string;
     completed?: boolean;
-    userId?: number
+
 }
 
 export const ModalEditTask = ({title,modalvisible,onClick,focusTask,refreshList}:ModalEditTaskProps) => {
@@ -41,9 +40,9 @@ export const ModalEditTask = ({title,modalvisible,onClick,focusTask,refreshList}
     const newTask = async (task:string) => {
 
         const newTask:TodoPayload = {
-            todo: `${newTaskName}`,
-            completed: focusTask?.completed,
-            userId: 4
+            tarefa: `${newTaskName}`,
+            completed: focusTask?.status,
+
         }
 
          await todoService.updateTodo(focusTask?.id!,newTask);

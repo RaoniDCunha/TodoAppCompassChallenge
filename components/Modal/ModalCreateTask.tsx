@@ -21,9 +21,8 @@ interface ModalCreateTaskProps {
 
 interface TodoPayload {
 
-    todo: string;
-    completed?: boolean;
-    userId?: number
+    tarefa: string;
+
 }
 
 
@@ -37,9 +36,7 @@ export const ModalCreateTask = ({title,modalvisible,onClick,refreshList}:ModalCr
 
         Keyboard.dismiss();
         const newTask:TodoPayload = {
-            todo: `${newTaskName}`,
-            completed: false,
-            userId: 4
+            tarefa: `${newTaskName}`,
         }
 
         let response = await todoService.createTodo(newTask);

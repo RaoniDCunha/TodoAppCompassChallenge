@@ -21,17 +21,15 @@ interface TaskProps {
 }
 
 interface TodoPayload {
-    todo: string;
-    completed?: boolean;
-    userId?: number;
+    tarefa: string;
+    status?: boolean;
 }
 
 export const Task = ({id,done,title,onClick,refreshList}:TaskProps) => {
 
     const payload:TodoPayload = {
-        todo: title,
-        completed: !done,
-        userId: 4
+        tarefa: title,
+        status: !done,
     }
 
     const updateTask = async () => {

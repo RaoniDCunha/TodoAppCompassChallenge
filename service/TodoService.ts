@@ -3,9 +3,9 @@ import axios, { AxiosResponse } from 'axios';
 const API_BASE_URL = 'http://10.0.2.2:3000';
 
 interface Todo {
-    id: string;
-    todo: string;
-    completed: boolean;
+    id: number;
+    tarefa: string;
+    status: boolean;
     userId: number;
 }
 
@@ -16,9 +16,7 @@ interface SingleTodoResponse {
 }
 
 interface TodoPayload {
-    todo: string;
-    completed?: boolean;
-    userId?: number
+    tarefa: string;
 }
 
 const todoService = {
@@ -52,7 +50,7 @@ const todoService = {
         }
     },
 
-    async updateTodo(id: string, payload: TodoPayload): Promise<SingleTodoResponse> {
+    async updateTodo(id: number, payload: TodoPayload): Promise<SingleTodoResponse> {
         try {
             const response: AxiosResponse<Todo> = await axios.put(`${API_BASE_URL}/tarefas/${id}`, payload);
             return { todo: response.data };
@@ -62,7 +60,7 @@ const todoService = {
         }
     },
 
-    async deleteTodo(id: string): Promise<void> {
+    async deleteTodo(id: number): Promise<void> {
         try {
             await axios.delete(`${API_BASE_URL}/tarefas/${id}`);
         } catch (error) {

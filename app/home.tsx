@@ -20,10 +20,9 @@ enum TodoStatus {
 }
 
 interface Todo {
-    id: string;
-    todo: string;
-    completed: boolean;
-    userId: number;
+    id: number;
+    tarefa: string;
+    status: boolean;
 }
 
 export default function Home() {
@@ -57,8 +56,8 @@ export default function Home() {
             setCurrentType(TodoStatus.LOADING);
             const response: Todo[] = await todoService.getAllTodos();
             setTodos(response);
-            const completed = response.filter(todo => todo.completed);
-            const uncompleted = response.filter(todo => !todo.completed);
+            const completed = response.filter(todo => todo.status);
+            const uncompleted = response.filter(todo => !todo.status);
 
             setCompletedTodos(completed);
             setUncompletedTodos(uncompleted);
@@ -86,7 +85,7 @@ export default function Home() {
         if (taskSearch) {
             const lowerCaseSearch = taskSearch.toLowerCase();
             const filtered = todos.filter(todo =>
-                todo.todo.toLowerCase().includes(lowerCaseSearch)
+                todo.tarefa.toLowerCase().includes(lowerCaseSearch)
             );
             setFilteredTodos(filtered);
         }else {
@@ -138,7 +137,7 @@ export default function Home() {
 
     // Renderiza cada componente da Flatlist
     const renderItem = ({ item }: any) => (
-        <Task key={item.id} title={item.todo} done={item.completed} id={item.id} onClick={() => handleModalEdit(item)} refreshList={fetchTodos}  />
+        <Task key={item.id} title={item.tarefa} done={item.status} id={item.id} onClick={() => handleModalEdit(item)} refreshList={fetchTodos}  />
     );
 
     const ItemSeparator = () => <View style={{ marginVertical: 5 }} />;

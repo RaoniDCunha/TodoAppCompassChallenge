@@ -20,10 +20,9 @@ import {CloseButton} from "@/components/CloseButton/CloseButton";
 import todoService from "@/service/TodoService";
 
 interface Todo {
-    id: string;
-    todo: string;
-    completed: boolean;
-    userId: number;
+    id: number ;
+    tarefa: string;
+    status: boolean;
 }
 
 interface ModalEditTaskProps {
@@ -37,7 +36,7 @@ interface ModalEditTaskProps {
 
 export const ModalDelete = ({title,modalvisible,onClick,focusTask,onClickEdit,refreshList}:ModalEditTaskProps) => {
 
-    const deleteItem = async (taskid:string | undefined) => {
+    const deleteItem = async (taskid:number | undefined ) => {
         try {
 
             Keyboard.dismiss()
@@ -73,7 +72,7 @@ export const ModalDelete = ({title,modalvisible,onClick,focusTask,onClickEdit,re
 
                         </ModalRow>
                         <ModalRowText >
-                            <ModalDescriptionText>{focusTask?.todo}</ModalDescriptionText>
+                            <ModalDescriptionText>{focusTask?.tarefa}</ModalDescriptionText>
                         </ModalRowText>
                        <ModalRow>
 
