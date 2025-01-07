@@ -13,9 +13,9 @@ interface LogoutButtonProps {
 export const LogoutButton = ({onpress}:LogoutButtonProps) => {
     return (
         <>
-            <TouchableOpacity onPress={onpress}>
-                <CloseButtonBox>
-                    <Feather name="log-out" size={24} color={colors.gray["600"]} />
+            <TouchableOpacity onPress={onpress} id={'button'}>
+                <CloseButtonBox >
+                    <Feather name="log-out" size={24} color={colors.gray["600"]}  />
                 </CloseButtonBox>
             </TouchableOpacity>
 

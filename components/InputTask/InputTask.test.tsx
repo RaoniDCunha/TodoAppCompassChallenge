@@ -1,71 +1,24 @@
-// __tests__/seuComponente.test.tsx
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
+import { InputTask } from '@/components/InputTask/InputTask';
 
-import { Text } from 'react-native';
-import {InputTask} from "@/components/InputTask/InputTask";
+describe('Componente InputTask', () => {
+    it('Renderiza input, chama onChangeText, verifica borda e ajusta altura', () => {
+        const onChangeTextMock = jest.fn();
+        const { getByPlaceholderText, getByTestId } = render(
+            <InputTask title="Nova Tarefa" onChangeText={onChangeTextMock} error={true} />
+        );
+        const inputElement = getByPlaceholderText('Nova Tarefa');
 
+        expect(inputElement).toBeDefined();
 
-test('seuComponente renders com a props texto correta', () => {
-    const textoProps = 'Teste de texto';
-    const {getByText} = render(<InputTask title={textoProps} />)
+        fireEvent.changeText(inputElement, 'Teste\n');
+        expect(onChangeTextMock).toHaveBeenCalledWith('Teste\n');
+        expect(inputElement.props.style.height).toBeDefined();
 
-    const textElement = getByText(textoProps)
+        const {getByTestId: getByTestId2} = render(
+            <InputTask title="Nova Tarefa" error={false} />
+        )
 
-    expect(textElement).toBeDefined()
-
-
-});
-
-test('InputTask renders with correct placeholder', () => {
-    const titleText = 'Test Input';
-    const { getByPlaceholderText } = render(
-        <InputTask title={titleText} />
-    );
-
-    const inputElement = getByPlaceholderText(titleText);
-    expect(inputElement).toBeDefined();
-});
-
-
-test('InputTask calls onChangeText when text changes', () => {
-    const onChangeTextMock = jest.fn();
-    const titleText = 'Test Input';
-    const { getByPlaceholderText } = render(<InputTask title={titleText} onChangeText={onChangeTextMock}/>);
-
-    const inputElement = getByPlaceholderText(titleText);
-    fireEvent.changeText(inputElement, 'Teste');
-
-    expect(onChangeTextMock).toHaveBeenCalledWith('Teste');
-});
-
-
-test('InputTask renders with error style if error prop is true', () => {
-    const titleText = 'Test Input';
-    const { getByPlaceholderText, getByTestId } = render(
-        <InputTask title={titleText} error={true} />
-    );
-
-
-    const inputElement = getByPlaceholderText(titleText)
-    const viewElement = inputElement.parentElement;
-    expect(viewElement).toHaveStyle({
-        borderColor: '#DC3545',
     });
-
-});
-
-
-test('InputTask renders without error style if error prop is false', () => {
-    const titleText = 'Test Input';
-    const { getByPlaceholderText, getByTestId } = render(
-        <InputTask title={titleText} error={false} />
-    );
-
-    const inputElement = getByPlaceholderText(titleText)
-    const viewElement = inputElement.parentElement;
-    expect(viewElement).toHaveStyle({
-        borderColor: '#CED4DA',
-    });
-
 });

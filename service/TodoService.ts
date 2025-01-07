@@ -24,7 +24,7 @@ interface TodoPayload {
 const todoService = {
     async getAllTodos(): Promise<Todo[]> {
         try {
-            const response: AxiosResponse<Todo[]> = await axios.get<Todo[]>(`${API_BASE_URL}/todos`);
+            const response: AxiosResponse<Todo[]> = await axios.get<Todo[]>(`${API_BASE_URL}/tarefas`);
             return response.data;
         } catch (error) {
             console.error('Erro ao buscar todos os TODOs:', error);
@@ -34,7 +34,7 @@ const todoService = {
 
     async getTodoById(id: string): Promise<SingleTodoResponse> {
         try {
-            const response: AxiosResponse<Todo> = await axios.get(`${API_BASE_URL}/todos/${id}`);
+            const response: AxiosResponse<Todo> = await axios.get(`${API_BASE_URL}/tarefas/${id}`);
             return { todo: response.data };
         } catch (error) {
             console.error(`Erro ao buscar TODO com ID ${id}:`, error);
@@ -44,7 +44,7 @@ const todoService = {
 
     async createTodo(payload: TodoPayload): Promise<SingleTodoResponse> {
         try {
-            const response: AxiosResponse<Todo> = await axios.post(`${API_BASE_URL}/todos`, payload);
+            const response: AxiosResponse<Todo> = await axios.post(`${API_BASE_URL}/tarefas`, payload);
             return { todo: response.data };
         } catch (error) {
             console.error('Erro ao criar TODO:', error);
@@ -54,7 +54,7 @@ const todoService = {
 
     async updateTodo(id: string, payload: TodoPayload): Promise<SingleTodoResponse> {
         try {
-            const response: AxiosResponse<Todo> = await axios.put(`${API_BASE_URL}/todos/${id}`, payload);
+            const response: AxiosResponse<Todo> = await axios.put(`${API_BASE_URL}/tarefas/${id}`, payload);
             return { todo: response.data };
         } catch (error) {
             console.error(`Erro ao atualizar TODO com ID ${id}:`, error);
@@ -64,7 +64,7 @@ const todoService = {
 
     async deleteTodo(id: string): Promise<void> {
         try {
-            await axios.delete(`${API_BASE_URL}/todos/${id}`);
+            await axios.delete(`${API_BASE_URL}/tarefas/${id}`);
         } catch (error) {
             console.error(`Erro ao deletar TODO com ID ${id}:`, error);
             throw error;

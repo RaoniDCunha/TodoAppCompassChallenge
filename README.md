@@ -70,7 +70,7 @@ A seguir, vídeos que demonstram as funcionalidades, configurações e execuçã
 
 ### Demonstração da Aplicação
 
-[Link do Vídeo de Demonstração da Aplicação](https://youtube.com/shorts/qSaOjJLGKCs?feature=share)
+[Link do Vídeo de Demonstração da Aplicação](https://youtube.com/shorts/zopJvN1W8gs)
 
 ### Explicação do Projeto
 

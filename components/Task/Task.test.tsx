@@ -1,63 +1,41 @@
-// __tests__/Task.test.tsx
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { Task } from '@/components/Task/Task';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
+
+import todoService from "@/service/TodoService";
+import {Task} from "@/components/Task/Task";
+
+jest.mock("@/service/TodoService") // Mock do service
+
+describe('Componente Task', () => {
+    const mockRefreshList = jest.fn();
+    const mockOnClick = jest.fn()
+
+    it('Deve renderizar a task com o título correto e o círculo correspondente', () => {
+        const { getByText, getByTestId } = render(
+            <Task id="1" done={false} title="Minha tarefa" onClick={mockOnClick} refreshList={mockRefreshList} />
+        );
+        expect(getByText('Minha tarefa')).toBeDefined();
+        expect(getByTestId('task-circle')).toBeDefined();
+
+        const { getByTestId: getByTestIdDone } = render(
+            <Task id="1" done={true} title="Minha tarefa" onClick={mockOnClick} refreshList={mockRefreshList} />
+        );
+        expect(getByTestIdDone('task-circle-done')).toBeDefined();
+    });
 
 
-test('Titulo das Tasks Deve ser Renderizado Corretamente', () => {
-    const titleText = 'Test Task';
-    const { getByText } = render(
-        <Task id='1' done={false} title={titleText} refreshList={()=>{}}/>
-    );
-    const titleElement = getByText(titleText);
+    it('Deve chamar o updateTask ao clicar no circulo e o onClick ao clicar no ícone de deletar', async () => {
+        const { getByTestId } = render(
+            <Task id="1" done={false} title="Minha tarefa" onClick={mockOnClick} refreshList={mockRefreshList} />
+        );
 
-    expect(titleElement).toBeDefined();
-});
+        const circle = getByTestId('task-circle');
+        await fireEvent.press(circle);
+        expect(todoService.updateTodo).toHaveBeenCalled();
 
+        const deleteIcon = getByTestId('AntDesign');
+        await fireEvent.press(deleteIcon);
+        expect(mockOnClick).toHaveBeenCalledTimes(1)
 
-test('Task Possui Um Circulo Quando Não Concluida', () => {
-    const { getByTestId } = render(
-        <Task id='1' done={false} title='test' refreshList={()=>{}}/>
-    );
-
-    const circleElement =  getByTestId('circleView');
-
-    expect(circleElement).toBeDefined();
-
-});
-
-test('Task renders a circle with check icon when done', () => {
-    const { getByTestId, getByText } = render(
-        <Task id='1' done={true} title='test' refreshList={()=>{}}/>
-    );
-
-    const checkIcon = getByTestId('circleViewDone');
-
-    expect(checkIcon).toBeDefined()
-
-});
-
-
-
-test('Task calls updateTask when circle is pressed', async () => {
-    const refreshListMock = jest.fn();
-    const updateTodoMock = jest.fn()
-    const { getByTestId } = render(<Task id='1' done={false} title='test' refreshList={refreshListMock}/>)
-    const circleElement =  getByTestId('circleView');
-    fireEvent.press(circleElement)
-
-
-    await new Promise(resolve => setTimeout(resolve, 0));
-    expect(refreshListMock).toHaveBeenCalled()
-});
-
-test('Task calls onClick when delete button is pressed', () => {
-    const onClickMock = jest.fn();
-    const { getByText } = render(
-        <Task id='1' done={false} title='test' onClick={onClickMock} refreshList={()=>{}}/>
-    );
-    const deleteButton = getByText('delete');
-
-    fireEvent.press(deleteButton);
-    expect(onClickMock).toHaveBeenCalled();
+    });
 });

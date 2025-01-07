@@ -50,6 +50,7 @@ export default function Home() {
         }
     }, [isLoggedIn]);
 
+    //fetch dos ToDos para popular o state
 
     const fetchTodos = async () => {
         try {
@@ -135,15 +136,18 @@ export default function Home() {
     }
 
 
-
+    // Renderiza cada componente da Flatlist
     const renderItem = ({ item }: any) => (
         <Task key={item.id} title={item.todo} done={item.completed} id={item.id} onClick={() => handleModalEdit(item)} refreshList={fetchTodos}  />
     );
 
     const ItemSeparator = () => <View style={{ marginVertical: 5 }} />;
 
+
+    //Mostra a Pagina de Acordo com o Enum atual
     const renderComponent = () => {
         switch (currentType) {
+            // Mostra a pagina de vazio
             case TodoStatus.EMPTY:
                 return <View style={{ flex: 4, alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
                     <View style={{
@@ -158,10 +162,13 @@ export default function Home() {
                     </View>
                     <EmptyTasks />
                 </View>;
+
+            //Pagina geral de loading
             case TodoStatus.LOADING:
                 return <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
                     <ActivityIndicator size="large" color={colors.gray["200"]} />
                 </View>;
+            //pagina geral da lista de Tasks
             case TodoStatus.TASKS:
                 return <View style={{ flex: 4, justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
                     <View style={{
