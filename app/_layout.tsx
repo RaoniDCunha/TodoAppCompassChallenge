@@ -9,6 +9,7 @@ import {AuthProvider} from "@/context/AuthContext";
 
 export default function Layout() {
 
+
     const [fontsLoaded] = useFonts({
         Inter_700Bold,
         Inter_400Regular,

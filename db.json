@@ -1,34 +1,28 @@
 {
   "todos": [
     {
-      "todo": "sssssss",
+      "todo": "Terminar AWS",
       "completed": true,
       "userId": 4,
-      "id": "1281"
+      "id": "7a2b"
     },
     {
-      "todo": "Nova Atividade",
+      "todo": "realizar video",
+      "completed": true,
+      "userId": 4,
+      "id": "4c7b"
+    },
+    {
+      "todo": "criado nova task",
+      "completed": true,
+      "userId": 4,
+      "id": "ad12"
+    },
+    {
+      "todo": "finalizaçao do projeto final e entrega no repositório completo com a documentaçao final.",
       "completed": false,
       "userId": 4,
-      "id": "3805"
-    },
-    {
-      "todo": "Terminar este Projeto",
-      "completed": true,
-      "userId": 4,
-      "id": "9085"
-    },
-    {
-      "todo": "outra",
-      "completed": true,
-      "userId": 4,
-      "id": "e759"
-    },
-    {
-      "todo": "modificou",
-      "completed": true,
-      "userId": 4,
-      "id": "d638"
+      "id": "c054"
     }
   ]
 }

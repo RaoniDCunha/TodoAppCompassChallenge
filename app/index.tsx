@@ -22,15 +22,15 @@ export default function Index() {
 
     const handleLogin = () => {
 
-        if (usernameText === "admin" && passwordText === "admin") {
+        if (usernameText === "admin" && passwordText === "password") {
 
             const userData = { id: 1, username: "admin" };
             login(userData);
-            router.replace("/home");
+            router.push("/home");
         } else if(usernameText !== 'admin') {
             setLoginErrorMessage(true);
         }else
-        if(passwordText !== 'admin') {
+        if(passwordText !== 'password') {
             setPasswordErrorMessage(true);
         } else {
             setPasswordErrorMessage(true);

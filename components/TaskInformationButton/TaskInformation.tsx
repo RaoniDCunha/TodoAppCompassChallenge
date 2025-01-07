@@ -6,16 +6,27 @@ import {
     TaskInformationText,
     TaskInformationView
 } from "@/components/TaskInformationButton/taskinformationstyle";
+import {TouchableOpacity} from "react-native";
 
-export const TaskInformationButton = ({number,title,color}:any) => {
+interface TaskInformationTodoProps {
+    number: number;
+    title: string;
+    color: any;
+    onpress: () => void;
+}
+
+export const TaskInformationButton = ({number,title,color,onpress}:TaskInformationTodoProps) => {
     return (
         <>
-            <TaskInformationView>
-                <TaskInformationText>{title}</TaskInformationText>
-                <TaskInformationCountView color={color}>
-                    <TaskInformationCountText color={color} > {number} </TaskInformationCountText>
-                </TaskInformationCountView>
-            </TaskInformationView>
+            <TouchableOpacity onPress={onpress}>
+                <TaskInformationView>
+                    <TaskInformationText>{title}</TaskInformationText>
+                    <TaskInformationCountView color={color}>
+                        <TaskInformationCountText color={color} > {number} </TaskInformationCountText>
+                    </TaskInformationCountView>
+                </TaskInformationView>
+            </TouchableOpacity>
+
         </>
     );
 };

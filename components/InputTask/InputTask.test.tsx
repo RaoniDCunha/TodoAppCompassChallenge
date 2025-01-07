@@ -50,7 +50,7 @@ test('InputTask renders with error style if error prop is true', () => {
     const inputElement = getByPlaceholderText(titleText)
     const viewElement = inputElement.parentElement;
     expect(viewElement).toHaveStyle({
-        borderColor: '#DC3545', // Cor de erro para o styled component
+        borderColor: '#DC3545',
     });
 
 });

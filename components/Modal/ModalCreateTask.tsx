@@ -10,6 +10,7 @@ import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
 import todoService from "@/service/TodoService";
 import {InputTask} from "@/components/InputTask/InputTask";
+import {DisabledButton} from "@/components/Button/DisabledButton";
 
 interface ModalCreateTaskProps {
     title?: string;
@@ -24,9 +25,12 @@ interface TodoPayload {
     userId?: number
 }
 
+
+
 export const ModalCreateTask = ({title,modalvisible,onClick,refreshList}:ModalCreateTaskProps) => {
 
     const [newTaskName,setNewTaskName] = useState<string>("");
+    const [disabled,setDisabled] = useState<boolean>(true);
 
     const newTask = async (task:string) => {
 
@@ -42,6 +46,16 @@ export const ModalCreateTask = ({title,modalvisible,onClick,refreshList}:ModalCr
 
         if (onClick) {
             onClick();
+        }
+    }
+
+    const changeText = (text:string) => {
+        setNewTaskName(text)
+
+        if(text !== ""){
+            setDisabled(false);
+        } else{
+            setDisabled(true);
         }
     }
 
@@ -62,12 +76,19 @@ export const ModalCreateTask = ({title,modalvisible,onClick,refreshList}:ModalCr
                         </ModalRow>
                         <ModalRow>
                             <View style={{flex: 5}}>
-                                <InputTask title={'Criar uma Nova Tarefa'}  onChangeText={(text) => setNewTaskName(text)} />
+                                <InputTask title={'Criar uma Nova Tarefa'}  onChangeText={(text) => changeText(text)} />
                             </View>
                             <View style={{flex: 1}}>
-                                <Button onPress={ () => newTask('dd')}>
-                                    <Button.Icon name="plus" />
-                                </Button>
+                                {disabled ? (
+                                    <DisabledButton >
+                                        <Button.Icon name="plus-circle" />
+                                    </DisabledButton>
+                                ) : (
+                                    <Button onPress={ () => newTask(newTaskName)}>
+                                        <Button.Icon name="plus-circle" />
+                                    </Button>
+                                )}
+
                             </View>
                         </ModalRow>
                     </ModalView>

@@ -16,7 +16,7 @@ import { ModalEditTask } from "@/components/Modal/ModalEditTask";
 import { EmptyTasks } from "@/components/EmptyTasks/EmptyTasks";
 
 enum TodoStatus {
-    LOADING, EMPTY, TASKS
+    LOADING, EMPTY, TASKS,SEARCH,COMPLETETODOS,UNCOMPLETETODOS
 }
 
 interface Todo {
@@ -29,7 +29,7 @@ interface Todo {
 export default function Home() {
 
     const { isLoggedIn, logout } = useAuth();
-    const router = useRouter();
+    const router = useRouter(); // Use the useRouter hook to get the router
     const [currentType, setCurrentType] = React.useState(TodoStatus.EMPTY);
     const [taskSearch, setTaskSearch] = React.useState<string>();
     const [errorModalVisible, setErrorModalVisible] = React.useState(false);
@@ -41,6 +41,8 @@ export default function Home() {
     const [todos, setTodos] = React.useState<Todo[]>([]);
     const [completedtodos, setCompletedTodos] = React.useState<Todo[]>([]);
     const [uncompletedtodos, setUncompletedTodos] = React.useState<Todo[]>([]);
+    const [filteredTodos, setFilteredTodos] = React.useState<Todo[]>([]);
+
 
     React.useEffect(() => {
         if (!isLoggedIn) {
@@ -79,6 +81,43 @@ export default function Home() {
         fetchTodos();
     }, []);
 
+    React.useEffect(() => {
+        if (taskSearch) {
+            const lowerCaseSearch = taskSearch.toLowerCase();
+            const filtered = todos.filter(todo =>
+                todo.todo.toLowerCase().includes(lowerCaseSearch)
+            );
+            setFilteredTodos(filtered);
+        }else {
+            setFilteredTodos(todos);
+        }
+
+    }, [taskSearch, todos]);
+
+    const searchItems = () => {
+        if(taskSearch == ''){
+            setCurrentType(TodoStatus.TASKS);
+        } else {
+            setCurrentType(TodoStatus.SEARCH);
+        }
+    }
+
+    const completedTodoSearchItems = () => {
+        if(currentType == TodoStatus.COMPLETETODOS){
+            setCurrentType(TodoStatus.TASKS);
+        } else {
+            setCurrentType(TodoStatus.COMPLETETODOS);
+        }
+    }
+
+    const uncompletedTodoSearchItems = () => {
+        if(currentType == TodoStatus.UNCOMPLETETODOS){
+            setCurrentType(TodoStatus.TASKS);
+        } else {
+            setCurrentType(TodoStatus.UNCOMPLETETODOS);
+        }
+    }
+
 
 
     const onClickEdit = () => {
@@ -88,13 +127,14 @@ export default function Home() {
 
     const handleLogout = () => {
         logout();
-        router.replace("/");
     };
 
     const handleModalEdit = (item: Todo) => {
         setFocusTask(item);
         setDeleteTaskModalVisible(true);
     }
+
+
 
     const renderItem = ({ item }: any) => (
         <Task key={item.id} title={item.todo} done={item.completed} id={item.id} onClick={() => handleModalEdit(item)} refreshList={fetchTodos}  />
@@ -113,8 +153,8 @@ export default function Home() {
                         justifyContent: 'space-between',
                         gap: 40
                     }}>
-                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} />
-                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} />
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} onpress={uncompletedTodoSearchItems} />
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} onpress={completedTodoSearchItems} />
                     </View>
                     <EmptyTasks />
                 </View>;
@@ -131,8 +171,8 @@ export default function Home() {
                         justifyContent: 'space-between',
                         gap: 40
                     }}>
-                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} />
-                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} />
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} onpress={uncompletedTodoSearchItems} />
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} onpress={completedTodoSearchItems} />
                     </View>
 
 
@@ -143,12 +183,103 @@ export default function Home() {
                         keyExtractor={(item) => String(item.id)}
                         ItemSeparatorComponent={ItemSeparator}
 
+
                     />
 
 
 
 
 
+
+                </View>;
+
+            // para searchs
+
+            case TodoStatus.SEARCH:
+                return <View style={{ flex: 4, justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 10,
+                        marginTop: 20,
+                        justifyContent: 'space-between',
+                        gap: 40
+                    }}>
+
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} onpress={uncompletedTodoSearchItems} />
+
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} onpress={completedTodoSearchItems} />
+
+
+
+                    </View>
+
+
+
+                    <FlatList
+                        data={filteredTodos}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => String(item.id)}
+                        ItemSeparatorComponent={ItemSeparator}
+
+                    />
+
+
+
+
+
+
+                </View>;
+
+            // search da lista de items concluidos
+            case TodoStatus.COMPLETETODOS:
+                return <View style={{ flex: 4, justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 10,
+                        marginTop: 20,
+                        justifyContent: 'space-between',
+                        gap: 40
+                    }}>
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} onpress={uncompletedTodoSearchItems} />
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} onpress={completedTodoSearchItems} />
+                    </View>
+
+
+
+                    <FlatList
+                        data={completedtodos}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => String(item.id)}
+                        ItemSeparatorComponent={ItemSeparator}
+
+                    />
+
+
+                </View>;
+
+            // search da lista de items não concluidos
+            case TodoStatus.UNCOMPLETETODOS:
+                return <View style={{ flex: 4, justifyContent: 'flex-start', paddingHorizontal: 20, paddingVertical: 40, gap: 10 }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 10,
+                        marginTop: 20,
+                        justifyContent: 'space-between',
+                        gap: 40
+                    }}>
+                        <TaskInformationButton number={uncompletedtodos.length} title={'Tarefas pendentes'} color={'purple'} onpress={uncompletedTodoSearchItems} />
+                        <TaskInformationButton number={completedtodos.length} title={'Concluídas'} color={'green'} onpress={completedTodoSearchItems} />
+                    </View>
+
+
+
+                    <FlatList
+                        data={uncompletedtodos}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => String(item.id)}
+                        ItemSeparatorComponent={ItemSeparator}
+
+                    />
 
                 </View>;
             default:
@@ -165,9 +296,9 @@ export default function Home() {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.gray["200"], padding: 20 }}>
                 <View style={{ justifyContent: 'flex-end', flexDirection: 'row', width: 350 }}>
                     <View style={{ width: 32 }}>
-                        <TouchableOpacity onPress={handleLogout}>
-                            <LogoutButton />
-                        </TouchableOpacity>
+
+                            <LogoutButton onpress={handleLogout} />
+
 
                     </View>
                 </View>
@@ -177,7 +308,7 @@ export default function Home() {
                         <Input title={'Pesquisar tarefa'} onChangeText={(text) => setTaskSearch(text)} />
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Button onPress={() => router.push("/home")}>
+                        <Button onPress={searchItems}>
                             <Button.Icon name="search" />
                         </Button>
                     </View>
@@ -196,7 +327,7 @@ export default function Home() {
 
             </View>
             <ModalDelete modalvisible={deleteTaskModalVisible} onClick={() => setDeleteTaskModalVisible(false)} focusTask={focusTask} onClickEdit={onClickEdit} refreshList={fetchTodos} />
-            <ModalError modalvisible={errorModalVisible} />
+            <ModalError modalvisible={errorModalVisible} refreshList={fetchTodos} closemodal={() => setErrorModalVisible(false)} />
             <ModalCreateTask modalvisible={createTaskModalVisible} onClick={() => setCreateTaskModalVisible(false)} refreshList={fetchTodos} />
             <ModalEditTask modalvisible={editTaskModalVisible} onClick={() => setEditTaskModalVisible(false)} focusTask={focusTask} refreshList={fetchTodos}  />
         </View>

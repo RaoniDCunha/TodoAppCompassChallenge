@@ -18,7 +18,21 @@ import {router} from "expo-router";
 import {Input} from "@/components/Input/Input";
 import {CloseButton} from "@/components/CloseButton/CloseButton";
 
-export const ModalError = ({title,modalvisible}:any) => {
+interface ModalErrorProps {
+    title?: string;
+    modalvisible?: boolean;
+    refreshList: () => void;
+    closemodal: () => void;
+}
+
+
+export const ModalError = ({title,modalvisible,refreshList,closemodal}:ModalErrorProps) => {
+
+    const refreshAndCloseModal = () => {
+        refreshList();
+        closemodal();
+    }
+
     return (
         <>
             <Modal
@@ -36,7 +50,7 @@ export const ModalError = ({title,modalvisible}:any) => {
                            <ModalErrorDescriptionText>Erro ao receber dados da API.</ModalErrorDescriptionText>
                        </ModalRow>
                         <ModalRow>
-                            <ModalErrorDescriptionButton>
+                            <ModalErrorDescriptionButton onPress={refreshAndCloseModal}>
                                 <ModalErrorDescriptionButtonText>Tentar novamente</ModalErrorDescriptionButtonText>
                             </ModalErrorDescriptionButton>
                         </ModalRow>

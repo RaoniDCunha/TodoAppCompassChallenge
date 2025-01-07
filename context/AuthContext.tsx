@@ -1,56 +1,45 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-
-interface User {
-    id: number;
-    username: string;
-
-}
-
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextProps {
-    user: User | null;
-    login: (userData: User) => void;
-    logout: () => void;
     isLoggedIn: boolean;
+    user: { id: number, username: string } | null;
+    login: (userData: { id: number, username: string }) => void;
+    logout: () => void;
 }
-
 
 const AuthContext = createContext<AuthContextProps>({
-    user: null,
-    login: () => {},
-    logout: () => {},
     isLoggedIn: false,
+    user: null,
+    login: () => { },
+    logout: () => { },
 });
 
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState<{ id: number, username: string } | null>(null);
 
-interface AuthProviderProps {
-    children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-
-    const isLoggedIn = !!user;
-
-    const login = (userData: User) => {
+    const login = (userData: { id: number, username: string }) => {
+        setIsLoggedIn(true);
         setUser(userData);
 
     };
 
     const logout = () => {
-        setUser(null);
+       setIsLoggedIn(false);
+       setUser(null);
 
-    };
+     };
+
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isLoggedIn }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-
 export const useAuth = () => {
     return useContext(AuthContext);
 };
+
